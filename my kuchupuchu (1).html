@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Kuchupuchu</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      overflow-x: hidden;
+      text-align: center;
+      color: #fff;
+      cursor: url('https://cur.cursors-4u.net/cursors/cur-2/cur115.cur'), auto;
+    }
+
+    header {
+      padding: 30px;
+      font-size: 3rem;
+      font-weight: bold;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff, 0 0 20px #ff99cc; }
+      to { text-shadow: 0 0 20px #ff3399, 0 0 30px #ff6699; }
+    }
+
+    .section {
+      margin: 30px auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    textarea, input[type="text"], input[type="date"] {
+      width: 90%;
+      padding: 15px;
+      border-radius: 15px;
+      border: none;
+      font-size: 1.1rem;
+      outline: none;
+      resize: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 30px;
+      background: #ff6699;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: #ff3366;
+    }
+
+    .quote {
+      font-size: 1.4rem;
+      font-style: italic;
+      padding: 10px;
+      min-height: 50px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    /* Floating hearts animation */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: pink;
+      transform: rotate(45deg);
+      animation: float 8s infinite;
+    }
+
+    .heart:before, .heart:after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: pink;
+      border-radius: 50%;
+    }
+
+    .heart:before { top: -10px; left: 0; }
+    .heart:after { left: -10px; top: 0; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+      100% { transform: translateY(-800px) rotate(45deg); opacity: 0; }
+    }
+
+    /* Typing effect */
+    #typing {
+      font-size: 1.3rem;
+      font-weight: bold;
+      min-height: 30px;
+      margin-top: 15px;
+    }
+
+    /* Constellation background (glowing stars) */
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+
+    /* Virtual Pet */
+    #pet {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 3rem;
+      cursor: pointer;
+      animation: bounce 2s infinite;
+      filter: drop-shadow(0px 0px 5px pink);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Speech bubble */
+    #petMessage {
+      position: fixed;
+      bottom: 90px;
+      right: 40px;
+      background: rgba(255, 182, 193, 0.9);
+      padding: 10px 15px;
+      border-radius: 15px;
+      font-size: 1rem;
+      max-width: 200px;
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Fireworks */
+    .firework {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: explode 1s ease-out forwards;
+    }
+
+    @keyframes explode {
+      from { transform: scale(0); opacity: 1; }
+      to { transform: scale(3); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>💖 My Kuchupuchu 💖</header>
+
+  <!-- Love Note Section -->
+  <div class="section">
+    <h2>Write a Note for Her ✍️</h2>
+    <textarea id="note" placeholder="Write something sweet here..."></textarea>
+    <br>
+    <button onclick="saveNote()">Save Note</button>
+  </div>
+
+  <!-- Song Selection Section -->
+  <div class="section">
+    <h2>Select a Song for Me 🎵</h2>
+    <p>Click the link to open Spotify and choose a song:</p>
+    <a href="https://open.spotify.com/" target="_blank" style="color:#fff; text-decoration:underline;">Open Spotify</a>
+    <br><br>
+    <input type="text" id="spotifyLinkInput" placeholder="Paste the Spotify song link here..." style="width: 80%; padding:10px; border-radius:10px; border:none; font-size:1rem;">
+    <br>
+    <button onclick="saveSpotifySong()">Save Song</button>
+    <p id="displaySong" style="margin-top:10px; font-size:1.2rem;"></p>
+  </div>
+
+  <!-- Quotes Section -->
+  <div class="section">
+    <h2>For You With Love 💌</h2>
+    <p id="quote" class="quote"></p>
+  </div>
+
+  <!-- Love Counter -->
+  <div class="section">
+    <h2>Love Counter ⏳</h2>
+    <input type="date" id="dateInput">
+    <button onclick="calculateLove()">Calculate</button>
+    <p id="counter"></p>
+  </div>
+
+  <!-- Typing Effect -->
+  <div class="section">
+    <h2>Message for You 💕</h2>
+    <p id="typing"></p>
+  </div>
+
+  <!-- Surprise Button -->
+  <div class="section">
+    <h2>Click for a Surprise 🎁</h2>
+    <button onclick="showSurprise()">Surprise Me</button>
+    <p id="surpriseText" style="font-size:1.3rem; margin-top:10px;"></p>
+  </div>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="your-background-music.mp3" type="audio/mpeg">
+    Your browser does not support audio playback.
+  </audio>
+  <button id="musicControl">🔈 Mute Music</button>
+
+  <!-- Virtual Pet -->
+  <div id="pet">🐻</div>
+  <div id="petMessage"></div>
+
+  <script>
+    /* Floating Hearts */
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.background = `hsl(${Math.random()*360}, 70%, 70%)`;
+      heart.style.animationDuration = (5 + Math.random() * 5) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 8000);
+    }
+    setInterval(createHeart, 500);
+
+    /* Stars Background */
+    for (let i = 0; i < 40; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.width = star.style.height = Math.random()*3 + "px";
+      star.style.top = Math.random()*window.innerHeight + "px";
+      star.style.left = Math.random()*window.innerWidth + "px";
+      document.body.appendChild(star);
+    }
+
+    /* Love Note Save */
+    const noteField = document.getElementById("note");
+    function saveNote() {
+      localStorage.setItem("loveNote", noteField.value);
+      alert("Note saved in your heart 💕");
+    }
+
+    /* Quotes Slideshow */
+    const quotes = [
+      "Your smile is brighter than the stars ✨",
+      "I don’t need the moon, I have your eyes 🌙",
+      "Every day with you feels like a beautiful dream 💭",
+      "You’re the poem I never knew how to write 📖",
+      "When you’re around, the world finally makes sense 🌍",
+      "Your beauty isn’t just in how you look, it’s in how you make me feel 💖",
+      "If I had a flower for every time I thought of you, I’d have a garden forever 🌹",
+      "You make my heart skip like a favorite song on repeat 🎶",
+      "You are the reason my today is better than yesterday 🌸",
+      "Even the stars envy the sparkle in your eyes ✨"
+    ];
+    const quoteElement = document.getElementById("quote");
+    function showRandomQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      quoteElement.style.opacity = 0;
+      setTimeout(() => {
+        quoteElement.textContent = quotes[randomIndex];
+        quoteElement.style.opacity = 1;
+      }, 1000);
+    }
+
+    /* Typing Effect */
+    const messages = [
+      "Every second with you is a gift 🎀",
+      "You are my forever and always 💘",
+      "I’d choose you in every lifetime 🌸",
+      "My heart beats only for you 💓"
+    ];
+    let msgIndex = 0, charIndex = 0;
+    const typingElement = document.getElementById("typing");
+    function typeMessage() {
+      if (charIndex < messages[msgIndex].length) {
+        typingElement.textContent += messages[msgIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeMessage, 100);
+      } else {
+        setTimeout(() => {
+          typingElement.textContent = "";
+          msgIndex = (msgIndex + 1) % messages.length;
+          charIndex = 0;
+          typeMessage();
+        }, 3000);
+      }
+    }
+
+    /* Love Counter */
+    function calculateLove() {
+      const dateInput = document.getElementById("dateInput").value;
+      if (!dateInput) return;
+      const startDate = new Date(dateInput);
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(diff / (1000*60*60*24));
+      const hours = Math.floor((diff / (1000*60*60)) % 24);
+      const minutes = Math.floor((diff / (1000*60)) % 60);
+
+      document.getElementById("counter").textContent =
+        `You’ve been together for ${days} days, ${hours} hours, and ${minutes} minutes 💖`;
+    }
+
+    /* Surprise Button */
+    function showSurprise() {
+      const texts = [
+        "I love you more than words 💕",
+        "You’re my sunshine ☀️",
+        "Forever yours 💍",
+        "My heart belongs to you 💖"
+      ];
+      const surpriseText = document.getElementById("surpriseText");
+      surpriseText.textContent = texts[Math.floor(Math.random() * texts.length)];
+
+      // Extra hearts shower
+      for (let i = 0; i < 10; i++) createHeart();
+    }
+
+    /* Background Music Fade-in/out */
+    const bgMusic = document.getElementById("bgMusic");
+    const musicControl = document.getElementById("musicControl");
+
+    function fadeInMusic(audio, targetVolume, duration) {
+      audio.volume = 0;
+      audio.play();
+      let step = targetVolume / (duration / 200);
+      let fadeInterval = setInterval(() => {
+        if (audio.volume < targetVolume) {
+          audio.volume = Math.min(audio.volume + step, targetVolume);
+        } else clearInterval(fadeInterval);
+      }, 200);
+    }
+
+    function fadeOutMusic(audio, duration) {
+      let step = audio.volume / (duration / 200);
+      let fadeInterval = setInterval(() => {
+        if (audio.volume > 0) {
+          audio.volume = Math.max(audio.volume - step, 0);
+        } else {
+          audio.pause();
+          clearInterval(fadeInterval);
+        }
+      }, 200);
+    }
+
+    musicControl.addEventListener("click", () => {
+      if (bgMusic.paused) {
+        fadeInMusic(bgMusic, 0.2, 5000);
+        musicControl.textContent = "🔈 Mute Music";
+      } else {
+        fadeOutMusic(bgMusic, 3000);
+        musicControl.textContent = "🔇 Play Music";
+      }
+    });
+
+    /* Fireworks on scroll bottom */
+    window.addEventListener("scroll", () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        for (let i = 0; i < 10; i++) {
+          const firework = document.createElement("div");
+          firework.className = "firework";
+          firework.style.width = firework.style.height = "5px";
+          firework.style.left = Math.random() * window.innerWidth + "px";
+          firework.style.top = Math.random() * window.innerHeight + "px";
+          firework.style.background = `hsl(${Math.random()*360},100%,70%)`;
+          document.body.appendChild(firework);
+          setTimeout(() => firework.remove(), 1000);
+        }
+      }
+    });
+
+    /* Pet Interactivity */
+    const pet = document.getElementById("pet");
+    const petMessage = document.getElementById("petMessage");
+    const petTexts = [
+      "He loves you sooo much 💕",
+      "You are his whole world 🌎",
+      "Cutest girl ever 🌸",
+      "Forever together 💍",
+      "You are his sunshine ☀️"
+    ];
+
+    pet.addEventListener("click", () => {
+      const randomText = petTexts[Math.floor(Math.random() * petTexts.length)];
+      petMessage.textContent = randomText;
+      petMessage.style.display = "block";
+      setTimeout(() => {
+        petMessage.style.display = "none";
+      }, 4000);
+
+      // Extra sparkle when clicked
+      for (let i = 0; i < 5; i++) createHeart();
+    });
+
+    /* Save Spotify Song */
+    function saveSpotifySong() {
+      const link = document.getElementById("spotifyLinkInput").value.trim();
+      if (!link) return alert("Please paste the Spotify song link 🎶");
+
+      let songName = link.split("/").pop().split("?")[0]; // Spotify ID
+      localStorage.setItem("spotifySongLink", link);
+      localStorage.setItem("spotifySongName", songName);
+
+      document.getElementById("displaySong").innerHTML =
+        `Your song for me: <a href="${link}" target="_blank" style="color:#fff; text-decoration:underline;">${songName}</a>`;
+      alert("Song saved in your heart 💖");
+    }
+
+    /* On Page Load */
+    window.onload = () => {
+      const savedNote = localStorage.getItem("loveNote");
+      if (savedNote) noteField.value = savedNote;
+
+      const savedLink = localStorage.getItem("spotifySongLink");
+      const savedName = localStorage.getItem("spotifySongName");
+      if (savedLink && savedName) {
+        document.getElementById("displaySong").innerHTML =
+          `Your song for me: <a href="${savedLink}" target="_blank" style="color:#fff; text-decoration:underline;">${savedName}</a>`;
+      }
+
+      showRandomQuote();
+      setInterval(showRandomQuote, 9000);
+
+      fadeInMusic(bgMusic, 0.2, 5000);
+      typeMessage();
+    };
+  </script>
+
+</body>
+</html>
